@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace zadanie
 {
-    public partial class BitMatrix : IEquatable<BitMatrix>, IEnumerable<int>
+    public partial class BitMatrix : IEquatable<BitMatrix>, IEnumerable<int>, ICloneable
     {
         private BitArray data;
         public int NumberOfRows { get; }
@@ -153,10 +153,21 @@ namespace zadanie
             foreach (bool bit in data)
                 yield return BoolToBit(bit);
         }
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public object Clone()
+        {
+            var clone = new BitMatrix(NumberOfRows, NumberOfColumns);
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                clone.data[i] = data[i];
+            }
+
+            return clone;
         }
     }
 }
