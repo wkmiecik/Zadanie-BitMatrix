@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace zadanie
 {
-    public partial class BitMatrix
+    public partial class BitMatrix : IEquatable<BitMatrix>, IEnumerable<int>
     {
         private BitArray data;
         public int NumberOfRows { get; }
@@ -133,23 +133,30 @@ namespace zadanie
             return !(bitM1.Equals(bitM2));
         }
 
-        public bool this[int i, int j]
+        public int this[int i, int j]
         {
-            get => data[(i * NumberOfColumns) + j];
-            set => data[(i * NumberOfColumns) + j] = value;
+            get
+            {
+                if (i >= NumberOfRows || j >= NumberOfColumns || i < 0 || j < 0) throw new IndexOutOfRangeException();
+                return BoolToBit(data[(i * NumberOfColumns) + j]);
+            }
+            set
+            {
+                if (i >= NumberOfRows || j >= NumberOfColumns || i < 0 || j < 0) throw new IndexOutOfRangeException();
+                data[(i * NumberOfColumns) + j] = BitToBool(value);
+            }
         }
 
 
-        //public IEnumerator<bool> GetEnumerator()
-        //{
-        //    foreach (var wiersz in data)
-        //        foreach (bool bit in wiersz)
-        //            yield return bit;
-        //}
+        public IEnumerator<int> GetEnumerator()
+        {
+            foreach (bool bit in data)
+                yield return BoolToBit(bit);
+        }
 
-        //IEnumerator IEnumerable.GetEnumerator()
-        //{
-        //    return GetEnumerator();
-        //}
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

@@ -6,9 +6,23 @@ namespace zadanie
     {
         static void Main(string[] args)
         {
-            var m1 = new BitMatrix(5, 6);
-            var m2 = new BitMatrix(6, 5);
-            Console.WriteLine(m1.Equals(m2));
+
+            // indekser - indeksy poza zakresem
+            int[] arr = new int[] { -1, 1, 3, 4 };
+            foreach (var i in arr)
+                foreach (var j in arr)
+                {
+                    var m = new BitMatrix(3, 4);
+                    try
+                    {
+                        m[i, j] = 1;
+                        Console.WriteLine($"m[{i}, {j}] = {m[i, j]}");
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        Console.WriteLine($"m[{i}, {j}] = exception");
+                    }
+                }
         }
     }
 }

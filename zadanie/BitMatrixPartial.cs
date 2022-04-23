@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace zadanie
 {
-    public partial class BitMatrix : IEquatable<BitMatrix>
+    public partial class BitMatrix
     {
 
     }
