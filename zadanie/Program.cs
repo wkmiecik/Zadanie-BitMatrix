@@ -6,10 +6,9 @@ namespace zadanie
     {
         static void Main(string[] args)
         {
-            BitMatrix m = new BitMatrix(4,3);
-            m[3, 2] = true;
-            Console.WriteLine(m[3,2]);
-            Console.WriteLine(m);
+            var m1 = new BitMatrix(5, 6);
+            var m2 = new BitMatrix(6, 5);
+            Console.WriteLine(m1.Equals(m2));
         }
     }
 }

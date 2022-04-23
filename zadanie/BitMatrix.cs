@@ -20,15 +20,60 @@ namespace zadanie
             NumberOfRows = numberOfRows;
             NumberOfColumns = numberOfColumns;
         }
+        public BitMatrix(int numberOfRows, int numberOfColumns, params int[] bits)
+        {
+            data = new BitArray(numberOfRows * numberOfColumns, BitToBool(0));
+            NumberOfRows = numberOfRows;
+            NumberOfColumns = numberOfColumns;
+
+            if (bits != null && bits.Length != 0)
+            {
+                for (int i = 0; i < bits.Length; i++)
+                {
+                    if (i < data.Length)
+                    {
+                        data[i] = BitToBool(bits[i]);
+                    }
+                }
+            }
+        }
+        public BitMatrix(int[,] bits)
+        {
+            if (bits == null) throw new NullReferenceException();
+            if (bits.Length == 0) throw new ArgumentOutOfRangeException();
+
+            data = new BitArray(bits.GetLength(0) * bits.GetLength(1), BitToBool(0));
+            NumberOfRows = bits.GetLength(0);
+            NumberOfColumns = bits.GetLength(1);
+
+            for (int i = 0; i < bits.GetLength(0); i++)
+            {
+                for (int j = 0; j < bits.GetLength(1); j++)
+                {
+                    data[(i * NumberOfColumns) + j] = BitToBool(bits[i, j]);
+                }
+            }
+        }
+        public BitMatrix(bool[,] bits)
+        {
+            if (bits == null) throw new NullReferenceException();
+            if (bits.Length == 0) throw new ArgumentOutOfRangeException();
+
+            data = new BitArray(bits.GetLength(0) * bits.GetLength(1), BitToBool(0));
+            NumberOfRows = bits.GetLength(0);
+            NumberOfColumns = bits.GetLength(1);
+
+            for (int i = 0; i < bits.GetLength(0); i++)
+            {
+                for (int j = 0; j < bits.GetLength(1); j++)
+                {
+                    data[(i * NumberOfColumns) + j] = bits[i, j];
+                }
+            }
+        }
 
         public static int BoolToBit(bool boolValue) => boolValue ? 1 : 0;
         public static bool BitToBool(int bit) => bit != 0;
-
-        public bool this[int i, int j]
-        {
-            get => data[(i * NumberOfColumns) + j];
-            set => data[(i * NumberOfColumns) + j] = value;
-        }
 
         public override string ToString()
         {
@@ -44,6 +89,54 @@ namespace zadanie
             }
 
             return wynik;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as BitMatrix);
+        }
+
+        public bool Equals(BitMatrix other)
+        {
+            if (other == null) return false;
+
+            if (this.NumberOfColumns != other.NumberOfColumns || this.NumberOfRows != other.NumberOfRows)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < this.data.Count; i++)
+            {
+                if (this.data[i] != other.data[i]) return false;
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.data.GetHashCode();
+        }
+
+        public static bool operator ==(BitMatrix bitM1, BitMatrix bitM2)
+        {
+            if (((object)bitM1) == null || ((object)bitM2) == null)
+                return Object.Equals(bitM1, bitM2);
+
+            return bitM1.Equals(bitM2);
+        }
+        public static bool operator !=(BitMatrix bitM1, BitMatrix bitM2)
+        {
+            if (((object)bitM1) == null || ((object)bitM2) == null)
+                return !Object.Equals(bitM1, bitM2);
+
+            return !(bitM1.Equals(bitM2));
+        }
+
+        public bool this[int i, int j]
+        {
+            get => data[(i * NumberOfColumns) + j];
+            set => data[(i * NumberOfColumns) + j] = value;
         }
 
 
